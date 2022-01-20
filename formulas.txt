@@ -1,0 +1,29 @@
+### Formulas for each ISIN Summary:
+
+isin = isin value
+
+name = First value of Name column for each ISIN
+
+ticker = First value of Ticker column for each ISIN
+
+total_shares_bought = Sum of all No. of shares when Action contains buy 
+
+total_shares_sold = Sum of all No. of shares when Action contains sell 
+
+total_shares = total_shares_bought - total_shares_sold
+
+sum_gbp = Sum of Total (GBP) values
+
+share_price = sum_gbp / total_shares
+
+exchange_rate = Average Exchange rate
+
+total_gbp = (total_shares * share_price) / exchange_rate
+
+average_buy_price = Average of Price / share when Action contains buy
+
+average_sell_price = Average of Price / share when Action contains sell
+
+result = (total_shares_sold * (average_sell_price - average_buy_price) ) / exchange_rate
+
+pnl_percentage = (((total_shares_sold * average_sell_price) - (total_shares_bought * average_buy_price) ) / (total_shares_bought * average_buy_price)) * 100

@@ -1,0 +1,8 @@
+
+# Files
+*.json
+.DS_Store
+
+# Folders
+data/
+env/

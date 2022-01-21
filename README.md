@@ -29,13 +29,21 @@ total_deposits = sum of Total (GBP) column values where Action = Deposit
 
 total_withdrawals = sum of Total (GBP) column values where Action = Withdrawal
 
-total_invested = total_deposits - total_withdrawals
+total_available = total_deposits - total_withdrawals
+
+free = total_deposits - total_withdrawals - total_gbp
+
+free_funds = free + total_dividends + total_result
 
 total_dividends = sum of Total (GBP) column values where Action contains Dividend
 
 currency_conversion_fee = sum of Currency conversion fee (GBP) values
 
 stamp_duty_reserve_tax = sum of Stamp duty reserve tax (GBP) values
+
+total_gbp = Sum of total_gpb of each ISIN summary
+
+total_result = Sum of total_result of each ISIN summary
 
 ```
 
@@ -51,22 +59,12 @@ total_shares_bought = Sum of all No. of shares when Action contains buy
 
 total_shares_sold = Sum of all No. of shares when Action contains sell 
 
-total_shares = total_shares_bought - total_shares_sold
+current_shares_held = total_shares_bought - total_shares_sold
 
-sum_gbp = Sum of Total (GBP) values
+total_gbp = Sum of Total GBP for buy - Sum of Total GBP for sell + Sum of Result GBP for sell
 
-share_price = sum_gbp / total_shares
+result = Sum of Result GBP for sell
 
-exchange_rate = Average Exchange rate
-
-total_gbp = (total_shares * share_price) / exchange_rate
-
-average_buy_price = Average of Price / share when Action contains buy
-
-average_sell_price = Average of Price / share when Action contains sell
-
-result = (total_shares_sold * (average_sell_price - average_buy_price) ) / exchange_rate
-
-pnl_percentage = (((total_shares_sold * average_sell_price) - (total_shares_bought * average_buy_price) ) / (total_shares_bought * average_buy_price)) * 100
+total_dividends = sum of Total (GBP) column values where Action contains Dividend
 
 ```

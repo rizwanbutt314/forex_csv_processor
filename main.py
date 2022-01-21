@@ -94,6 +94,11 @@ def aggregate_group_data_for_isin_summary(group):
     total_gpb = Decimal(str(gbp_buy_sum)) - Decimal(str(gbp_sell_sum)
                                                     ) + Decimal(str(result_gbp_sell_sum))
 
+    # Total dividends
+    total_dividends = group.loc[group['Action'].str.contains(
+        "Dividend"), "Total (GBP)"].tolist()
+    total_dividends = float(sum(list(map(Decimal, total_dividends))))
+
     group_aggregated_data['isin'] = group.name
     group_aggregated_data['name'] = group["Name"].iloc[0]
     group_aggregated_data['ticker'] = group["Ticker"].iloc[0]
@@ -102,7 +107,9 @@ def aggregate_group_data_for_isin_summary(group):
     group_aggregated_data['current_shares_held'] = float(total_shares)
     group_aggregated_data['total_gbp'] = float(total_gpb)
     group_aggregated_data['result'] = float(result_gbp_sell_sum)
-    return pd.Series(group_aggregated_data, index=['isin', 'name', 'ticker', 'total_shares_bought', 'total_shares_sold', 'current_shares_held', 'total_gbp', 'result'])
+    group_aggregated_data['total_dividends'] = float(total_dividends)
+    return pd.Series(group_aggregated_data, index=['isin', 'name', 'ticker', 'total_shares_bought',
+                                                   'total_shares_sold', 'current_shares_held', 'total_gbp', 'result', 'total_dividends'])
 
 
 def generate_account_summary(df, total_gbp, total_result):
@@ -110,37 +117,51 @@ def generate_account_summary(df, total_gbp, total_result):
         Function to generate account summary for whole csv file
     """
 
+    # Total deposits
     total_deposits = df.loc[df['Action'] == "Deposit", "Total (GBP)"].tolist()
     total_deposits = float(sum(list(map(Decimal, total_deposits))))
 
+    # Total withdrawals
     total_withdrawals = df.loc[df['Action'] ==
                                "Withdrawal", "Total (GBP)"].tolist()
     total_withdrawals = float(sum(list(map(Decimal, total_withdrawals))))
 
+    # Total available
     total_available = total_deposits - total_withdrawals
 
+    # Total dividends
     total_dividends = df.loc[df['Action'].str.contains(
         "Dividend"), "Total (GBP)"].tolist()
     total_dividends = float(sum(list(map(Decimal, total_dividends))))
 
+    # Total currency conversion free
     currency_conversion_fee = df["Currency conversion fee (GBP)"].tolist()
     currency_conversion_fee = list(
         map(lambda x: x if not is_nan(x) else '0.0', currency_conversion_fee))
     currency_conversion_fee = float(
         sum(list(map(Decimal, currency_conversion_fee))))
 
+    # Total stamp duty reserve tax
     stamp_duty_reserve_tax = df["Stamp duty reserve tax (GBP)"].tolist()
     stamp_duty_reserve_tax = list(map(lambda x: x if str(
         x) not in ['nan', ''] else '0.0', stamp_duty_reserve_tax))
     stamp_duty_reserve_tax = float(
         sum(list(map(Decimal, stamp_duty_reserve_tax))))
 
+    # Free
+    free = float(Decimal(str(total_deposits)) -
+                 Decimal(str(total_withdrawals)) - Decimal(str(total_gbp)))
+
+    # Free funds
+    free_funds = float(Decimal(
+        str(free)) + Decimal(str(total_dividends)) + Decimal(str(total_result)))
+
     account_summary = {
         "total_deposits": total_deposits,
         "total_withdrawals": total_withdrawals,
         "total_available": total_available,
-        "free": total_deposits - total_withdrawals - total_gbp,
-        "free": float(Decimal(str(total_deposits)) - Decimal(str(total_withdrawals)) - Decimal(str(total_gbp))),
+        "free": free,
+        "free_funds": free_funds,
         "total_dividends": total_dividends,
         "currency_conversion_fee": currency_conversion_fee,
         "stamp_duty_reserve_tax": stamp_duty_reserve_tax,

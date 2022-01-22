@@ -1,57 +1,13 @@
-import os
-import math
-import json
 import pandas as pd
 from decimal import Decimal
+from utils import (
+    save_to_db,
+    is_float_digit,
+    is_nan,
+    get_latest_csv_file,
+    get_today_date
+)
 
-DATA_FOLDER = "data/"
-basepath = os.path.dirname(os.path.abspath(__file__))
-account_summary_filename = "account_summary.json"
-isin_summary_filename = "isin_summary.json"
-
-
-def is_nan(val):
-    """
-        Function to check the given input is of nan type or not.
-    """
-    try:
-        x = float(str(val).lower())
-        return math.isnan(x)
-    except:
-        return False
-
-
-def save_json(filename, data):
-    """
-        Function to save data to json file
-    """
-
-    filepath = os.path.join(basepath, filename)
-    with open(filepath, "w") as f:
-        json.dump(data, f)
-
-
-def get_latest_csv_file():
-    """
-        Function to get the latest csv file from the given folder
-    """
-    all_files = os.listdir(DATA_FOLDER)
-    csv_files = list(filter(lambda f: f.endswith('.csv'), all_files))
-    csv_files = list(
-        map(lambda file: os.path.join(DATA_FOLDER, file), csv_files))
-    latest_csv = max(csv_files, key=os.path.getctime)
-    return latest_csv
-
-
-def is_float_digit(n):
-    """
-        Function to check given input is valid for float type
-    """
-    try:
-        float(n)
-        return True
-    except:
-        return False
 
 
 def aggregate_group_data_for_isin_summary(group):
@@ -99,6 +55,7 @@ def aggregate_group_data_for_isin_summary(group):
         "Dividend"), "Total (GBP)"].tolist()
     total_dividends = float(sum(list(map(Decimal, total_dividends))))
 
+    group_aggregated_data['_date'] = get_today_date()
     group_aggregated_data['isin'] = group.name
     group_aggregated_data['name'] = group["Name"].iloc[0]
     group_aggregated_data['ticker'] = group["Ticker"].iloc[0]
@@ -108,7 +65,7 @@ def aggregate_group_data_for_isin_summary(group):
     group_aggregated_data['total_gbp'] = float(total_gpb)
     group_aggregated_data['result'] = float(result_gbp_sell_sum)
     group_aggregated_data['total_dividends'] = float(total_dividends)
-    return pd.Series(group_aggregated_data, index=['isin', 'name', 'ticker', 'total_shares_bought',
+    return pd.Series(group_aggregated_data, index=['_date', 'isin', 'name', 'ticker', 'total_shares_bought',
                                                    'total_shares_sold', 'current_shares_held', 'total_gbp', 'result', 'total_dividends'])
 
 
@@ -157,6 +114,7 @@ def generate_account_summary(df, total_gbp, total_result):
         str(free)) + Decimal(str(total_dividends)) + Decimal(str(total_result)))
 
     account_summary = {
+        "_date": get_today_date(),
         "total_deposits": total_deposits,
         "total_withdrawals": total_withdrawals,
         "total_available": total_available,
@@ -169,7 +127,8 @@ def generate_account_summary(df, total_gbp, total_result):
         "total_result": total_result
     }
 
-    save_json(account_summary_filename, account_summary)
+    # save_json(account_summary_filename, account_summary)
+    save_to_db([account_summary], table_name="account_summary")
 
 
 def generate_each_isin_summary(df):
@@ -186,7 +145,9 @@ def generate_each_isin_summary(df):
     total_result = group_df["result"].tolist()
     total_result = float(sum(list(map(Decimal, total_result))))
 
-    save_json(isin_summary_filename, group_df.to_dict("records"))
+    # save_json(isin_summary_filename, group_df.to_dict("records"))
+    save_to_db(group_df.to_dict("records"), table_name="isin_summary")
+
     return total_gbp, total_result
 
 

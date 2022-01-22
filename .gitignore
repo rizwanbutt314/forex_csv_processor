@@ -6,3 +6,4 @@
 # Folders
 data/
 env/
+__pycache__

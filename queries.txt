@@ -1,0 +1,31 @@
+CREATE TABLE account_summary(
+    total_deposits DOUBLE,
+    total_withdrawals DOUBLE,
+    total_available DOUBLE,
+    free DOUBLE,
+    free_funds DOUBLE,
+    total_dividends DOUBLE,
+    currency_conversion_fee DOUBLE,
+    stamp_duty_reserve_tax DOUBLE,
+    total_gbp DOUBLE,
+    total_result DOUBLE,
+    _date VARCHAR(40),
+    creation_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    modification_time DATETIME ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE isin_summary(
+    isin VARCHAR(200),
+    name VARCHAR(200),
+    ticker VARCHAR(200),
+    total_shares_bought DOUBLE,
+    total_shares_sold DOUBLE,
+    current_shares_held DOUBLE,
+    total_gbp DOUBLE,
+    result DOUBLE,
+    total_dividends DOUBLE,
+    _date VARCHAR(40),
+    creation_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    modification_time DATETIME ON UPDATE CURRENT_TIMESTAMP
+);

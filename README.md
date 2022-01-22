@@ -9,7 +9,7 @@ account summary + summary for each ISIN.
 * create a virtual environment: `virtualenv -p /usr/bin/python3 env` (Optional)
 * activate the environemnt: `source ./env/bin/activate` (Optional when you don't need first step)
 * install requirements: `pip install -r requirements.txt`
-* Edit `main.py` file to update the Data folder path according to yours
+* Edit `utils.py` file to update the Data folder path according to yours
 * Following is the Data folder variable which needs to be updated
 ```
 DATA_FOLDER = "data/"

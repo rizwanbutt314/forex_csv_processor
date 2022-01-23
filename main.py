@@ -5,9 +5,11 @@ from utils import (
     is_float_digit,
     is_nan,
     get_latest_csv_file,
-    get_today_date
+    get_today_date,
+    save_txt,
+    account_summary_txt_filename,
+    isin_summary_txt_filename
 )
-
 
 
 def aggregate_group_data_for_isin_summary(group):
@@ -127,7 +129,7 @@ def generate_account_summary(df, total_gbp, total_result):
         "total_result": total_result
     }
 
-    # save_json(account_summary_filename, account_summary)
+    save_txt(account_summary_txt_filename, account_summary)
     save_to_db([account_summary], table_name="account_summary")
 
 
@@ -145,7 +147,7 @@ def generate_each_isin_summary(df):
     total_result = group_df["result"].tolist()
     total_result = float(sum(list(map(Decimal, total_result))))
 
-    # save_json(isin_summary_filename, group_df.to_dict("records"))
+    save_txt(isin_summary_txt_filename, group_df.to_dict("records"))
     save_to_db(group_df.to_dict("records"), table_name="isin_summary")
 
     return total_gbp, total_result

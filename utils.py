@@ -9,6 +9,8 @@ DATA_FOLDER = "data/"
 basepath = os.path.dirname(os.path.abspath(__file__))
 account_summary_filename = "account_summary.json"
 isin_summary_filename = "isin_summary.json"
+account_summary_txt_filename = "account_summary.txt"
+isin_summary_txt_filename = "isin_summary.txt"
 
 # MYSQL Settings
 DB_HOST = "localhost"
@@ -75,6 +77,16 @@ def save_json(filename, data):
     filepath = os.path.join(basepath, filename)
     with open(filepath, "w") as f:
         json.dump(data, f)
+
+
+def save_txt(filename, data):
+    """
+        Function to save data to txt file
+    """
+
+    filepath = os.path.join(basepath, filename)
+    with open(filepath, "w") as f:
+        f.write(json.dumps(data, indent=4))
 
 
 def get_latest_csv_file():
@@ -144,7 +156,8 @@ def save_to_db(data, table_name=""):
         else:
             # Update the existing data
             update_query_cols = (record.get(col, None) for col in columns)
-            where_columns_vals = (record.get(col, None) for col in where_columns)
+            where_columns_vals = (record.get(col, None)
+                                  for col in where_columns)
 
             sql = f"""UPDATE {table_name} SET {update_query_cols_str} WHERE {where_columns_cols_str} """
             val = (*update_query_cols, *where_columns_vals)

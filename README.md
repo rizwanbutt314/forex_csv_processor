@@ -20,7 +20,7 @@ DATA_FOLDER = "data/"
 
 ### Note:
 *  `requirements.txt` file contains the list of packages that are required to install.
-* After processing, two json files will be generated with the names `account_summary.json` and `isin_summary.json`
+* After processing, two text files will be generated with the names `account_summary.txt` and `isin_summary.txt`
 
 
 ### Formulas for Account Summary:

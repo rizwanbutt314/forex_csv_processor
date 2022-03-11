@@ -29,3 +29,44 @@ CREATE TABLE isin_summary(
     creation_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     modification_time DATETIME ON UPDATE CURRENT_TIMESTAMP
 );
+
+# Add currency column to isin_summary table
+
+
+CREATE TABLE balance_212(
+    name VARCHAR(200),
+    ticker VARCHAR(200),
+    current_price DOUBLE,
+    no_of_shares DOUBLE,
+    value_gbp DOUBLE,
+    average_price DOUBLE,
+    return_value DOUBLE,
+    return_percentage DOUBLE,
+    _date VARCHAR(40),
+    creation_time DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE portfolio_account(
+    account_name VARCHAR(200),
+    deposits DOUBLE,
+    balance DOUBLE,
+    profit DOUBLE,
+    equity DOUBLE,
+    pnl_percentage DOUBLE,
+    _date VARCHAR(40),
+    creation_time DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE wallet_212(
+    name VARCHAR(200),
+    ticker VARCHAR(200),
+    current_shares_held DOUBLE,
+    total_gbp DOUBLE,
+    total_deposits DOUBLE,
+    free_funds DOUBLE,
+    account_total_gbp DOUBLE,
+    currency varchar(50),
+    _date VARCHAR(40),
+    creation_time DATETIME DEFAULT CURRENT_TIMESTAMP
+);

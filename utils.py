@@ -324,7 +324,7 @@ DB_TABLE_COLUMNS_MAPPING_FOR_SLACK = {
     }
 }
 
-SLACK_USER_TOKEN = "xoxp-3225338370068-3246759464832-3220112306406-a0c203664e676b934240d6c0e762ee84"
+SLACK_USER_TOKEN = "test-token"
 
 
 def format_table_strucutre(table_type="stock-data", data=[]):

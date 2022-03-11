@@ -68,3 +68,17 @@ result = Sum of Result GBP for sell
 total_dividends = sum of Total (GBP) column values where Action contains Dividend
 
 ```
+
+### Get Token of Slack app:
+* Go to https://api.slack.com/apps/
+* Create a new App
+* Once App is created, go to *OAuth & Permissions* tab to add following scopes under *User Token Scopes*:
+    * channels:read
+    * channels:write
+    * chat:write
+    * users:read
+    * users:write
+
+* Then go to *Installed App* tab and click on *Install to workspace*
+* Copy the *User OAuth Token*
+* Go to utils.py file and Edit `SLACK_USER_TOKEN=token` variable value.

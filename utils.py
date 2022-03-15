@@ -20,7 +20,7 @@ DB_PASSWORD = "mysql123"
 DB_DATABASE = "frx"
 
 TABLES_MAPPING = {
-    "account_summary": {
+    "account_summary_212": {
         "where_columns": ["_date"],
         "columns": [
             "total_deposits",
@@ -36,7 +36,7 @@ TABLES_MAPPING = {
             "_date"
         ]
     },
-    "isin_summary": {
+    "isin_summary_212": {
         "where_columns": ["isin", "_date"],
         "columns": [
             "isin",

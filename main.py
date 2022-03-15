@@ -147,7 +147,7 @@ def generate_account_summary(df, total_gbp, total_result):
     }
 
     save_txt(account_summary_txt_filename, account_summary)
-    save_to_db([account_summary], table_name="account_summary")
+    save_to_db([account_summary], table_name="account_summary_212")
 
     return account_summary
 
@@ -169,7 +169,7 @@ def generate_each_isin_summary(df):
     df_data = group_df.to_dict("records")
 
     save_txt(isin_summary_txt_filename, df_data)
-    save_to_db(df_data, table_name="isin_summary")
+    save_to_db(df_data, table_name="isin_summary_212")
 
     return total_gbp, total_result, df_data
 
